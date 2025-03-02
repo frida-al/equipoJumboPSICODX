@@ -12,7 +12,7 @@ Para nombrar clases y id en HTML o CSS, se usarán guiones. (Ejemplo: first-butt
 
 No se utilizará ‘var’ para declarar variables. Siempre se usará ‘const’, a menos que sea imperativo reasignar, entonces se utiliza ‘let’.
 
-	ARREGLOS
+ARREGLOS
  
 Usar la sintaxis literal para crear un arreglo.
 // mal uso:
