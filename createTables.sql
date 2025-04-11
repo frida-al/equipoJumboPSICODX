@@ -81,13 +81,13 @@ CREATE TABLE `responde16pf` (
   ADD PRIMARY KEY (`idPrueba`);
 
   ALTER TABLE `responde16pf`
-  ADD PRIMARY KEY (`idPregunta16PF`,`idGrupo`,`idUsuario`),
+  ADD PRIMARY KEY (`idRespuesta16PF`),
   ADD KEY `responde16PF_ibfk_1` (`idGrupo`),
   ADD KEY `responde16PF_ibfk_2` (`idUsuario`),
   ADD KEY `responde16PF_ibfk_3` (`idOpcion16PF`);
   
   ALTER TABLE `respondekostick`
-  ADD PRIMARY KEY (`idPreguntaKostick`,`idGrupo`,`idUsuario`),
+  ADD PRIMARY KEY (`idRespuestaKostick`),
   ADD KEY `respondeKostick_ibfk_1` (`idGrupo`),
   ADD KEY `respondeKostick_ibfk_2` (`idUsuario`),
   ADD KEY `respondeKostick_ibfk_3` (`idOpcionKostick`);
