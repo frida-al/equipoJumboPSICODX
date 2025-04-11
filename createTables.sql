@@ -93,6 +93,68 @@ CREATE TABLE `responde16pf` (
   ADD KEY `respondeKostick_ibfk_3` (`idOpcionKostick`);
 
   ALTER TABLE `tiene16pf`
+
+
+CREATE TABLE areasotis (
+    idAreaOtis INT,
+    nombreAreaOtis VARCHAR(30)
+);
+
+CREATE TABLE preguntasotis (
+    idPreguntaOtis VARCHAR(36) PRIMARY KEY not NULL, 
+    idPrueba VARCHAR(36),
+    numeroPregunta INT,
+    preguntaOtis VARCHAR(255),
+    idAreaOtis INT,
+    FOREIGN KEY (idPrueba) REFERENCES pruebas(idPrueba),
+    FOREIGN KEY (idAreaOtis) REFERENCES areasotis(idAreaOtis)
+);
+
+CREATE TABLE opcionesotis (
+    idOpcionOtis VARCHAR(36) PRIMARY KEY,
+    idPreguntaOtis VARCHAR(36),
+    opcionOtis INT,
+    descripcionOpcion TEXT,
+    esCorrecta BOOLEAN,
+    FOREIGN KEY (idPreguntaOtis) REFERENCES preguntasotis(idPreguntaOtis)
+);
+
+CREATE TABLE respuestaotisaspirante (
+    idRespuestaOtis VARCHAR(36) PRIMARY KEY not NULL,
+    idAspirante VARCHAR(36),
+    idGrupo VARCHAR(36),
+    idPreguntaOtis VARCHAR(36),
+    idOpcionOtis VARCHAR(36),  -- Solo si es opción múltiple
+    idPrueba VARCHAR(36),
+    tiempoRespuesta INT,  -- En segundos
+    FOREIGN KEY (idAspirante) REFERENCES aspirantes(idAspirante),
+    FOREIGN KEY (idPreguntaOtis) REFERENCES preguntasotis(idPreguntaOtis),
+    FOREIGN KEY (idOpcionOtis) REFERENCES opcionesotis(idOpcionOtis),
+    FOREIGN KEY (idPrueba) REFERENCES pruebas(idPrueba),
+    FOREIGN KEY (idGrupo) REFERENCES grupos(idGrupo)
+);
+
+CREATE TABLE colores(
+    idColor INT AUTO_INCREMENT PRIMARY KEY, -- INT AUTO_INCREMENT
+    nombreColor VARCHAR(50),
+    numeroColor INT,
+    significado VARCHAR(50),
+    hexColor VARCHAR(7)
+);
+
+CREATE TABLE seleccionescolores(
+    idSeleccionColores VARCHAR(36) PRIMARY KEY NOT NULL, -- UUID
+    idPrueba VARCHAR(36), -- UUID
+    idAspirante VARCHAR(36), -- UUID
+    idGrupo VARCHAR(36),
+    idColor INT, -- INT AUTO_INCREMENT
+    posicion INT CHECK (posicion <= 7 AND posicion >= 0),
+    fase INT CHECK (fase = 1 OR fase = 2),
+    FOREIGN KEY (idPrueba) REFERENCES pruebas(idPrueba),
+    FOREIGN KEY (idAspirante) REFERENCES aspirantes(idAspirante),
+    FOREIGN KEY (idColor) REFERENCES colores(idColor),
+    FOREIGN KEY (idGrupo) REFERENCES grupos(idGrupo)
+);
   ADD PRIMARY KEY (`idPregunta16PF`,`idPrueba`);
   
   ALTER TABLE `tienekostick`
