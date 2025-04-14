@@ -6,6 +6,14 @@ CREATE TABLE `pruebas` (
   `descripcion` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+/*
+    Equipo: SoftSync
+    Pruebas: 1 Kostick y 2 16PF 
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+*/
+
+
 CREATE TABLE `preguntaskostick` (
   `idPreguntaKostick` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `numeroPreguntaKostick` int(11) NOT NULL,
@@ -159,3 +167,55 @@ CREATE TABLE seleccionescolores(
   
   ALTER TABLE `tienekostick`
   ADD PRIMARY KEY (`idPreguntaKostick`,`idPrueba`);
+
+/*
+    Equipo: Monarch Systems
+    Pruebas: 3 Hartman y 4 Terman
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+*/
+
+-- HARTMAN 
+
+CREATE TABLE `preguntashartman` (
+  `idPreguntaHartman` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `idPrueba` int(11) NOT NULL,
+  `fasePregunta` int(11) NOT NULL,
+  `numeroPregunta` int(11) NOT NULL,
+  `preguntaHartman` varchar(500) NOT NULL,
+  `valorHartman` varchar(5) NOT NULL,
+  FOREIGN KEY (`idPrueba`) REFERENCES `pruebas`(`idPrueba`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- TERMAN
+
+CREATE TABLE `seriesterman` (
+  `idSerieTerman` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `idPrueba` int(11) NOT NULL,
+  `duracion` int NOT NULL,
+  `nombreSeccion` varchar(50) NOT NULL,
+  `instruccion` longtext NOT NULL,
+  FOREIGN KEY (`idPrueba`) REFERENCES `pruebas`(`idPrueba`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `preguntasterman` (
+  `idPreguntaTerman` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `idSerieTerman` int(11) NOT NULL,
+  `numeroPregunta` int(11) NOT NULL,
+  `preguntaTerman` varchar(500) NOT NULL,
+  FOREIGN KEY (`idSerieTerman`) REFERENCES `seriesterman`(`idSerieTerman`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `opcionesterman` (
+  `idOpcionTerman` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `idPreguntaTerman` int(11) NOT NULL,
+  `opcionTerman` int(11) NOT NULL,
+  `descripcionTerman` varchar(100) NOT NULL,
+  `esCorrecta` boolean NOT NULL,
+  FOREIGN KEY (`idPreguntaTerman`) REFERENCES `preguntasterman`(`idPreguntaTerman`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*
+    Equipo: VaulTech
+    Pruebas: Otis y Colores
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+*/
