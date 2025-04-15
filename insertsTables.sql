@@ -4,6 +4,13 @@ INSERT INTO pruebas (idPrueba, duracion, instrucciones, nombre, descripcion) VAL
 (3, 1200, 'Al lado encontrará usted 18 frases, cada una de estas representa algo a lo cual un individuo puede asignarle diferentes valores (bueno o malo) dependiendo de sus propias consideraciones acerca de cuál es bueno o malo. Lea cuidadosamente todas las frases (si hay alguna que no entienda pregunte su significado). Escriba el número 1 dentro del espacio situado antes de la frase que en su opinión representa el valor más alto o sea la frase que usted considera que expresa el mejor valor. Escriba el número 2 dentro del espacio situado antes de la frase que usted considera en segundo lugar, y así sucesivamente. Enumere todas las frases en sentido descendente utilizando un número diferente para cada una de las 18 frases (3, 4 ,5 y así sucesivamente) hasta llegar al número 18 que deberá representar aquella que usted considera que expresa lo peor. No juzgue las frases por la importancia sino exclusivamente por la bondad o maldad que contienen. Concéntrese en su tarea. Decida rápidamente qué número le va a asignar a cada una de las frases. No hay tiempo límite, pero la mayoría de la gente puede enumerar todas estas frases en unos diez minutos.', 'Inventario de Personalidad y Valores Hartman', 'Este test es una herramienta para conocer la PERSONALIDAD de los individuos, se basa en los VALORES y las CONVICCIONES.'),
 (4, 1620, 'Lee cuidadosamente las instrucciones de cada serie y responde las preguntas como se indica. No podrás regresar una vez que hayas respondido una pregunta.', 'Test de Aptitud Mental TERMAN', 'El Test de Aptitud Mental TERMAN colectivo, mide el coeficiente intelectual (CI), Conocimientos, Comprensión, Análisis y Síntesis, Razonamiento, Aritmética, Juicio Práctico, Sentido Común y Capacidad de Deducción.');
 
+
+/*
+        Equipo: SoftSync
+        Pruebas: 1 Kostick y 2 16PF
+        - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+*/
+
 -- INSERT KOSTICK
 
 INSERT INTO preguntaskostick (idPreguntaKostick, numeroPreguntaKostick, idPrueba) VALUES
@@ -283,7 +290,8 @@ INSERT INTO opcioneskostick (idOpcionKostick, opcionKostick, descripcionOpcionKo
 (UUID(), 'b', 'Tengo que terminar con lo que he empezado', (SELECT idPreguntaKostick FROM preguntasKostick WHERE numeroPreguntaKostick = 90));
 
 
--- inserts de preguntas16pf
+-- Inserts de preguntas16pf
+
 INSERT INTO preguntas16PF (idPregunta16PF, idPrueba, numeroPregunta16PF, pregunta16PF, letraAporte) VALUES
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 1, 'En un negocio sería más interesante encargarse de:', 'A'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 2, 'Normalmente me voy a dormir sintiéndome satisfecho de cómo ha ido el día.', 'C'),
