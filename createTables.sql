@@ -215,6 +215,77 @@ CREATE TABLE `opcionesterman` (
   FOREIGN KEY (`idPreguntaTerman`) REFERENCES `preguntasterman`(`idPreguntaTerman`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `respuestashartman` (
+  `idRespuestaHartman` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `idAspirante` int(11) NOT NULL,
+  `idGrupo` int(11) NOT NULL,
+  `idPreguntaHartman` int(11) NOT NULL,
+  `idPrueba` int(11) NOT NULL,
+  `respuestaAbierta` varchar(500) NOT NULL,
+  `tiempoRespuesta` int NOT NULL,
+  FOREIGN KEY (`idAspirante`) REFERENCES `usuarios`(`idUsuario`),
+  FOREIGN KEY (`idGrupo`) REFERENCES `grupos`(`idGrupo`),
+  FOREIGN KEY (`idPreguntaHartman`) REFERENCES `preguntashartman`(`idPreguntaHartman`),
+  FOREIGN KEY (`idPrueba`) REFERENCES `pruebas`(`idPrueba`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `respuestasterman` (
+  `idRespuestaTerman` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `idAspirante` int(11) NOT NULL,
+  `idGrupo` int(11) NOT NULL,
+  `idPreguntaTerman` int(11) NOT NULL,
+  `idPrueba` int(11) NOT NULL,
+  `respuestaAbierta` varchar(500) NOT NULL,
+  `tiempoRespuesta` int NOT NULL,
+  FOREIGN KEY (`idAspirante`) REFERENCES `usuarios`(`idUsuario`),
+  FOREIGN KEY (`idGrupo`) REFERENCES `grupos`(`idGrupo`),
+  FOREIGN KEY (`idPreguntaTerman`) REFERENCES `preguntasterman`(`idPreguntaTerman`),
+  FOREIGN KEY (`idPrueba`) REFERENCES `pruebas`(`idPrueba`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `resultadoshartman` (
+  `idAspirante` int(11) NOT NULL,
+  `idGrupo` int(11) NOT NULL,
+  `fraseDimI` float(11) NOT NULL,
+  `fraseDimE` float(11) NOT NULL,
+  `fraseDimS` float(11) NOT NULL,
+  `fraseDif` float(11) NOT NULL,
+  `fraseDimGeneral` float(11) NOT NULL,
+  `fraseDimPorcentaje` float(11) NOT NULL,
+  `fraseIntI` float(11) NOT NULL,
+  `fraseIntE` float(11) NOT NULL,
+  `fraseIntS` float(11) NOT NULL,
+  `fraseIntGeneral` float(11) NOT NULL,
+  `fraseIntPorcentaje` float(11) NOT NULL,
+  `fraseD.I` float(11) NOT NULL,
+  `fraseDIS` float(11) NOT NULL,
+  `fraseVQ1` float(11) NOT NULL,
+  `fraseVQ2` float(11) NOT NULL,
+  `citaDimI` float(11) NOT NULL,
+  `citaDimE` float(11) NOT NULL,
+  `citaDimS` float(11) NOT NULL,
+  `citaDif` float(11) NOT NULL,
+  `citaDimGeneral` float(11) NOT NULL,
+  `citaDimPorcentaje` float(11) NOT NULL,
+  `citaIntI` float(11) NOT NULL,
+  `citaIntE` float(11) NOT NULL,
+  `citaIntS` float(11) NOT NULL,
+  `citaIntGeneral` float(11) NOT NULL,
+  `citaIntPorcentaje` float(11) NOT NULL,
+  `citaD.I` float(11) NOT NULL,
+  `citaDIS` float(11) NOT NULL,
+  `citaSQ1` float(11) NOT NULL,
+  `citaSQ2` float(11) NOT NULL,
+  `BQr1` float(11) NOT NULL,
+  `BQa1` float(11) NOT NULL,
+  `BQr2` float(11) NOT NULL,
+  `BQa2` float(11) NOT NULL,
+  `CQ1` float(11) NOT NULL,
+  `CQ2` float(11) NOT NULL,
+  FOREIGN KEY (`idAspirante`) REFERENCES `usuarios`(`idUsuario`),
+  FOREIGN KEY (`idGrupo`) REFERENCES `grupos`(`idGrupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 /*
     Equipo: VaulTech
     Pruebas: Otis y Colores
