@@ -49,11 +49,12 @@ CREATE TABLE preguntas16pf (
   letraAporte varchar(3) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `opciones16pf` (
-  `idOpcion16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  `opcion16PF` varchar(5) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  `descripcionOpcion16PF` varchar(250) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  `idPregunta16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
+CREATE TABLE opciones16PF (
+  idOpcion16PF varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  opcion16PF varchar(5) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  descripcionOpcion16PF varchar(250) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  idPregunta16PF varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  valor16PF int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `tiene16pf` (
