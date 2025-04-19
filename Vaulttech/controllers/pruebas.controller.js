@@ -3,7 +3,6 @@ const PruebaColores = require('../models/prueba.model');
 const PruebaOtis = require('../models/prueba.model');
 const OpcionOtis = require('../models/opcionOtis.model.js');
 const Aspirante = require('../models/aspirante.model');
-const Prueba = require('../models/prueba.model');
 
 // Formulario datos personales
 exports.getDatosPersonalesOtis = (request, response, next) => {
