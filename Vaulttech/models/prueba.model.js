@@ -12,11 +12,20 @@ module.exports = class Prueba{
     }
 
     // Obtiene los datos personales de un aspirante según el grupo y la prueba OTIS.
-    static getDatosPersonalesAspirante(idGrupo, idAspirante){
+    static getDatosPersonalesAspiranteOtis(idGrupo, idAspirante){
         return db.execute(`SELECT nombre, apellidoPaterno, apellidoMaterno, puestoSolicitado, fecha 
             FROM datospersonales 
             WHERE idAspirante = ? 
             AND idPrueba = 5
+            AND idGrupo = ?`, [idAspirante, idGrupo])
+    }
+
+    // Obtiene los datos personales de un aspirante según el grupo y la prueba OTIS.
+    static getDatosPersonalesAspiranteColores(idGrupo, idAspirante){
+        return db.execute(`SELECT nombre, apellidoPaterno, apellidoMaterno, puestoSolicitado, fecha 
+            FROM datospersonales 
+            WHERE idAspirante = ? 
+            AND idPrueba = 6
             AND idGrupo = ?`, [idAspirante, idGrupo])
     }
 
@@ -89,25 +98,6 @@ module.exports = class Prueba{
         return Promise.all(promesas);
     };               
 
-    static getPreguntas16PF(){}
-
-    static getPreguntasHartman(){}
-
-    static getPreguntasKostick(){}
-
-    static getPreguntasTerman(){}
-
-
-    static addRespuestaOtis(){}
-
-    static addRespuesta16PF(){}
-
-    static addRespuestaHartman(){}
-
-    static addRespuestaKostick(){}
-
-    static addRespuestaTerman(){}
-
     static fetchColores(){
         return db.execute('SELECT * FROM colores ORDER BY numeroColor');
     }
@@ -164,60 +154,6 @@ module.exports = class Prueba{
             WHERE idAspirante = ? AND idGrupo = ? AND idPrueba = ?`,
             [idAspirante, idGrupo, idPrueba]
         );
-    }
-
-    static getRespuestasOtis(idAspirante, idGrupo){
-        return db.execute(`
-                SELECT u.nombreUsuario, u.apellidoPaterno, u.apellidoMaterno, 
-                ao.idAreaOtis, ao.nombreAreaOtis,
-                SUM(CASE WHEN o.esCorrecta = 1 THEN 1 ELSE 0 END) 
-                AS respuestasCorrectas,
-                SUM(CASE WHEN o.escorrecta = 0 THEN 1 ELSE 0 END) 
-                AS respuestasIncorrectas,
-                SUM(CASE WHEN o.esCorrecta IS NULL THEN 1 ELSE 0 END) 
-                AS sinRespuesta,
-
-                ROUND((SUM(CASE WHEN o.esCorrecta = 1 THEN 1 ELSE 0 END) 
-                * 100.0) 
-                /  
-                NULLIF(SUM(CASE WHEN o.esCorrecta IS NOT NULL THEN 1 ELSE 0 
-                END), 0), 2) AS porcentajeCorrectas  
-
-                FROM aspirantes a  
-
-                JOIN usuarios u ON a.idUsuario = u.idUsuario
-
-                JOIN gruposaspirantes ga ON a.idAspirante = ga.idAspirante 
-                AND ga.idGrupo = ?
-
-                LEFT JOIN respuestaotisaspirante ra ON 
-                a.idAspirante = ra.idAspirante
-
-                LEFT JOIN opcionesotis o ON ra.idOpcionOtis = o.idOpcionOtis
-
-                LEFT JOIN preguntasotis p ON 
-                ra.idPreguntaOtis = p.idPreguntaOtis
-
-                LEFT JOIN areasotis ao ON p.idAreaOtis = ao.idAreaOtis
-
-                WHERE a.idAspirante = ?
-
-                GROUP BY u.nombreUsuario, u.apellidoPaterno, u.apellidoMaterno,
-                ao.idAreaOtis, ao.nombreAreaOtis
-            `, [idGrupo, idAspirante]);
-    }
-
-    static getPuntajeBrutoOtis(idAspirante, idGrupo){
-        return db.execute(`
-                SELECT COUNT(*) as puntajeBruto
-                FROM respuestaotisaspirante, opcionesotis
-                WHERE idAspirante = ?
-                AND idGrupo = ?
-                AND opcionesotis.idOpcionOtis = 
-                respuestaotisaspirante.idOpcionOtis
-                AND opcionesotis.esCorrecta = 1
-                GROUP BY idAspirante
-            `, [idAspirante, idGrupo]);
     }
 
 }
