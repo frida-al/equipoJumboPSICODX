@@ -20,7 +20,7 @@ module.exports = class RespondeKostick {
   save() {
     return db
       .execute(
-        "INSERT INTO respondekostick (idRespuestaKostick, idPreguntaKostick, idGrupo, idUsuario, idOpcionKostick, tiempo) VALUES (?,?,?,?,?)",
+        "INSERT INTO respondekostick (idRespuestaKostick, idPreguntaKostick, idGrupo, idUsuario, idOpcionKostick, tiempo) VALUES (?,?,?,?,?,?)",
         [
           this.idRespuestaKostick,
           this.idPreguntaKostick,
@@ -37,5 +37,12 @@ module.exports = class RespondeKostick {
           idUsuario: this.idUsuario,
         };
       });
+  }
+
+  static fetchRespuesta(idGrupo, idUsuario, numeroPreguntaKostick) {
+    return db.execute(
+      "SELECT opcionKostick FROM opcioneskostick WHERE idOpcionKostick = (SELECT idOpcionKostick FROM respondekostick WHERE idGrupo = ? AND idUsuario = ? AND idPreguntaKostick = (SELECT idPreguntaKostick FROM preguntaskostick WHERE numeroPreguntaKostick = ?))",
+      [idGrupo, idUsuario, numeroPreguntaKostick]
+    );
   }
 };
