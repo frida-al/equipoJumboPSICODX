@@ -403,7 +403,3 @@ exports.getPruebaCompletada = (request, response, next) => {
     response.render('Aspirantes/pruebaCompletada', {
     });
 };
-
-exports.getRespuestasEnviadas = (request, response, next) => {
-    response.render('Aspirantes/respuestasEnviadas');
-};
