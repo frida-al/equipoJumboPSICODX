@@ -41,6 +41,31 @@ CREATE TABLE `respondekostick` (
   `tiempo` DECIMAL(6, 3) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE resultadoskostick (
+	idGrupo varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+    idUsuario varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+    G int(2) NOT NULL,
+    L int(2) NOT NULL,
+	I int(2) NOT NULL,
+	T int(2) NOT NULL,
+	V int(2) NOT NULL,
+	S int(2) NOT NULL,
+	R int(2) NOT NULL,
+	D int(2) NOT NULL,
+	C int(2) NOT NULL,
+	E int(2) NOT NULL,
+	W int(2) NOT NULL,
+	F int(2) NOT NULL,
+	K int(2) NOT NULL,
+	Z int(2) NOT NULL,
+	O int(2) NOT NULL,
+	B int(2) NOT NULL,
+	X int(2) NOT NULL,
+	P int(2) NOT NULL,
+	A int(2) NOT NULL,
+	N int(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE preguntas16pf (
   idPregunta16PF varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   pregunta16PF varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
