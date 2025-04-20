@@ -319,7 +319,7 @@ INSERT INTO preguntas16PF (idPregunta16PF, idPrueba, numeroPregunta16PF, pregunt
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 24, 'Si tuviera que cocinar o construir algo seguiría las instrucciones exactamente.', 'H'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 25, 'A la hora de construir o hacer algo preferiría trabajar:', 'G'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 26, 'Me gusta hacer planes con antelación para no perder tiempo entre las tareas.', 'L'),
-(UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 27, 'Normalmente me gusta hacer mis palnes yo solo, sin interrupciones y sugerencias de otros.', 'M'),
+(UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 27, 'Normalmente me gusta hacer mis planes yo solo, sin interrupciones y sugerencias de otros.', 'M'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 28, 'Cuando me siento tenso incluso pequeñas cosas me sacan de quicio.', 'N'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 29, 'Puedo encontrarme bastante a gusto en un ambiente desorganizado.', 'M'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 30, 'Si mis planes, cuidadosmanete elaborados, tuvieran que ser cambiados a causa de otras personas:', 'Q1'),
@@ -350,7 +350,7 @@ INSERT INTO preguntas16PF (idPregunta16PF, idPrueba, numeroPregunta16PF, pregunt
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 55, 'Lo que este mundo necesita es:', 'A'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 56, 'Prefiero los juegos en los que:', 'C'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 57, 'Normalmente dejo algunas cosas a la buena suerte en vez de hacer planes complejos y con detalle.', 'E'),
-(UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 58, 'Frecuentemente tengo periodos de tiempo  en que mes difícil abandonar el sentimiento de compadecerme a mí mismo/a.', 'F'),
+(UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 58, 'Frecuentemente tengo periodos de tiempo  en que me es difícil abandonar el sentimiento de compadecerme a mí mismo/a.', 'F'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 59, 'Mis mejores horas del día son aquellos en que estoy solo con mis pensamientos y proyectos.', 'G'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 60, 'Si la gente me interrumpe cuando estoy intentando hacer algo, eso no me perturba.', 'H'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 61, 'Siempre conservo mis pertenencias en perfectas condiciones.', 'I'),
@@ -388,7 +388,7 @@ INSERT INTO preguntas16PF (idPregunta16PF, idPrueba, numeroPregunta16PF, pregunt
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 93, 'Soy algo perfeccionista y me gusta que las cosas se hagan bien.', 'E'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 94, 'Cuando tengo que hacer una larga cola por algún motivo, no me pongo tan intranquilo y nervioso como la mayoría.', 'F'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 95, 'La gente me trata menos razonablemente de lo que merecen mis buenas intenciones.', 'G'),
-(UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 96, 'Me la paso bien con ente que muestra abiertamente sus emociones.', 'H'),
+(UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 96, 'Me la paso bien con gente que muestra abiertamente sus emociones.', 'H'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 97, 'No dejo que me depriman pequeñas cosas.', 'I'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 98, 'Si pudiera ayudar en el desarrollo de un invento útil preferiría encargarme de:', 'L'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 99, 'Si ser cortés y amable no da resultado puedo ser rudo y astuto cuando sea necesario.', 'M'),
@@ -478,6 +478,7 @@ INSERT INTO preguntas16PF (idPregunta16PF, idPrueba, numeroPregunta16PF, pregunt
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 183, '¿Qué letra debe seguir al final de éstas? E – I – L…', 'B'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 184, '¿Qué número debe seguir al final de éstos? 1/12 – 1/6 – 1/3 – 2/3...', 'B'),
 (UUID(), (SELECT idPrueba FROM pruebas WHERE nombre = 'Personalidad 16 Factores (16 PF)'), 185, '¿Qué número debe seguir al final de éstos? 1  2  0  3  -1…', 'B');
+
 
 -- opciones
 
@@ -637,7 +638,7 @@ insert into opciones16PF (idOpcion16PF, opcion16PF, descripcionOpcion16PF, idPre
 (UUID(), 'C', 'Normalmente falso', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 51), 2),
 (UUID(), 'A', 'Verdadero, normalmente no me gustan', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 52), 2),
 (UUID(), 'B', '?', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 52), 1),
-(UUID(), 'C', 'Falso, normalmente las escuentro interesantes', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 52), 0),
+(UUID(), 'C', 'Falso, normalmente las encuentro interesantes', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 52), 0),
 (UUID(), 'A', 'Buscar un significado personal a la vida', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 53), 0),
 (UUID(), 'B', '?', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 53), 1),
 (UUID(), 'C', 'Asegurarme un trabajo con un buen sueldo', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 53), 2),
@@ -1037,6 +1038,7 @@ insert into opciones16PF (idOpcion16PF, opcion16PF, descripcionOpcion16PF, idPre
 (UUID(), 'A', '5', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 185), 1),
 (UUID(), 'B', '4', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 185), 0),
 (UUID(), 'C', '-3', (SELECT idPregunta16PF FROM preguntas16PF WHERE numeroPregunta16PF = 185), 0);
+
 
 
 /*
