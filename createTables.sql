@@ -27,18 +27,13 @@ CREATE TABLE `opcioneskostick` (
   `idPreguntaKostick` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `tienekostick` (
-  `idPreguntaKostick` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  `idPrueba` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 CREATE TABLE `respondekostick` (
-`idRespuestaKostick` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL, -- primary key
+`idRespuestaKostick` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idPreguntaKostick` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idGrupo` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idUsuario` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idOpcionKostick` varchar(36) NOT NULL,
-  `tiempo` DECIMAL(6, 3) NOT NULL 
+  `tiempo` DECIMAL(12, 3) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE resultadoskostick (
@@ -82,18 +77,13 @@ CREATE TABLE opciones16PF (
   valor16PF int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `tiene16pf` (
-  `idPregunta16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  `idPrueba` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 CREATE TABLE `responde16pf` (
-  `idRespuesta16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL, -- primary key
+  `idRespuesta16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idPregunta16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idGrupo` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idUsuario` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idOpcion16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  `tiempo` DECIMAL(6, 3) NOT NULL
+  `tiempo` DECIMAL(12, 3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE parametros16pf(
@@ -149,7 +139,10 @@ CREATE TABLE parametros16pf(
   ADD KEY `respondeKostick_ibfk_2` (`idUsuario`),
   ADD KEY `respondeKostick_ibfk_3` (`idOpcionKostick`);
 
-  ALTER TABLE `tiene16pf`
+  ALTER TABLE `parametros16pf`
+  ADD PRIMARY KEY (idUsuario, idGrupo),
+  ADD KEY parametros16pf_ibfk_1 (idUsuario),
+  ADD KEY parametros16pf_ibfk_2 (idGrupo);
 
 
 CREATE TABLE areasotis (
