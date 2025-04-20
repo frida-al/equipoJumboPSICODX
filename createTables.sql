@@ -66,12 +66,12 @@ CREATE TABLE resultadoskostick (
 	N int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE preguntas16pf (
-  idPregunta16PF varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  pregunta16PF varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
-  idPrueba int(11) NOT NULL,
-  numeroPregunta16PF int(5) NOT NULL,
-  letraAporte varchar(3) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
+CREATE TABLE `preguntas16pf` (
+  `idPregunta16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `pregunta16PF` varchar(150) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+  `idPrueba` int(11) NOT NULL,
+  `numeroPregunta16PF` int(5) NOT NULL,
+  `letraAporte` varchar(3) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE opciones16PF (
@@ -94,6 +94,28 @@ CREATE TABLE `responde16pf` (
   `idUsuario` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `idOpcion16PF` varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
   `tiempo` DECIMAL(6, 3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE parametros16pf(
+	idUsuario varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+    idGrupo varchar(36) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+    A INT(5) NOT NULL DEFAULT 0,
+    B INT(5) NOT NULL DEFAULT 0,
+    C INT(5) NOT NULL DEFAULT 0,
+    E INT(5) NOT NULL DEFAULT 0,
+    F INT(5) NOT NULL DEFAULT 0,
+    G INT(5) NOT NULL DEFAULT 0,
+    H INT(5) NOT NULL DEFAULT 0,
+    I INT(5) NOT NULL DEFAULT 0,
+    L INT(5) NOT NULL DEFAULT 0,
+    M INT(5) NOT NULL DEFAULT 0,
+    N INT(5) NOT NULL DEFAULT 0,
+    O INT(5) NOT NULL DEFAULT 0,
+    Q1 INT(5) NOT NULL DEFAULT 0,
+    Q2 INT(5) NOT NULL DEFAULT 0,
+    Q3 INT(5) NOT NULL DEFAULT 0,
+    Q4 INT(5) NOT NULL DEFAULT 0,
+    IM INT(5) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
   ALTER TABLE `opciones16pf`
