@@ -1,8 +1,182 @@
-const { request, response } = require("express");
+//////////////
+//PSICÓLOGOS//
+//////////////
+
+// Modelos
+const Prueba = require('../models/prueba.model');
+const Cuadernillo = require('../models/cuadernilloOtis.model');
+const CuadernilloColores = require('../models/cuadernilloColores.model');
+
+/*
+ * ANÁLISIS OTIS
+*/
+exports.getAnalisisOtis = (request, response, next) => {
+    Prueba.getRespuestasOtis(request.params.idAspirante, request.params.idGrupo)
+    .then(([rows, fieldData]) => {
+        const informacionAnalisis = rows;
+        Prueba.getPuntajeBrutoOtis(request.params.idAspirante, request.params.idGrupo)
+        .then(([rows, fieldData]) => {
+            const puntajeBruto = rows[0].puntajeBruto;
+            console.log("Informacion Analisis: ", informacionAnalisis);
+            console.log("Puntaje Bruto: ", puntajeBruto);
+            response.render('Psicologos/analisisOtis.ejs', {
+                informacionAnalisis: informacionAnalisis || [],
+                puntajeBruto: puntajeBruto || 0,
+                idAspirante: request.params.idAspirante || null,
+                idGrupo: request.params.idGrupo || null,
+                idInstitucion: request.params.idInstitucion || null,
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+};
+
+/*
+ * CUADERNILLO OTIS
+*/
+// Controlador para manejar la obtención del cuadernillo de respuestas OTIS.
+exports.getCuadernilloOtis = (request, response, next) => {
+    // Obtiene los datos personales del aspirante
+    Prueba.getDatosPersonalesAspiranteOtis(request.params.idGrupo, request.params.idAspirante)
+    .then(([rows, fieldData]) => {
+        const datosPersonales = rows;
+        // Obtiene las respuestas correctas del aspirante
+        Cuadernillo.getRespuestasCorrectas(request.params.idGrupo, request.params.idAspirante)
+        .then(([rows, fieldData]) => {
+            const respuestasCorrectas = rows[0].RespuestasCorrectas;
+            // Obtiene el tiempo total que tomo el aspirante para completar la prueba
+            Cuadernillo.getTiempoTotal(request.params.idGrupo, request.params.idAspirante)
+            .then(([rows, fieldData]) => {
+                const tiempoTotal = rows[0].Tiempo;
+                // Obtiene las preguntas, opciones y la respuesta del aspirante
+                Cuadernillo.getRespuestasOtisAspirante(request.params.idGrupo, request.params.idAspirante)
+                .then(([rows, fieldData]) => {
+                    const preguntasAgrupadas = {};
+
+                    rows.forEach(row => {
+                        // Creamos el objeto de pregunta si este no existe
+                        if (!preguntasAgrupadas[row.idPreguntaOtis]) {
+                            preguntasAgrupadas[row.idPreguntaOtis] = {
+                                idPreguntaOtis: row.idPreguntaOtis,
+                                numeroPregunta: row.numeroPregunta,
+                                preguntaOtis: row.preguntaOtis,
+                                opciones: [],
+                                esCorrecta: false,
+                                tiempoRespuesta: 0,
+                                contestada: null
+                            };
+                        }
+                        // Vamos añadiendo las opciones de la pregunta correspondiente
+                        preguntasAgrupadas[row.idPreguntaOtis].opciones.push({
+                            idOpcionOtis: row.idOpcionOtis,
+                            opcionOtis: row.opcionOtis,
+                            descripcionOpcion: row.descripcionOpcion,
+                            esCorrecta: row.esCorrecta === 1, 
+                            seleccionada: row.opcionSeleccionada === 1
+                        });
+
+                        if (row.opcionSeleccionada === 1) {
+                            preguntasAgrupadas[row.idPreguntaOtis].tiempoRespuesta = row.tiempoRespuesta;
+                            preguntasAgrupadas[row.idPreguntaOtis].contestada = true;
+                            preguntasAgrupadas[row.idPreguntaOtis].esCorrecta = row.esCorrecta === 1;
+
+                        }
+
+                        if(!preguntasAgrupadas[row.idPreguntaOtis].contestada){
+                            preguntasAgrupadas[row.idPreguntaOtis].esCorrecta = null;
+                        }
+                    })
+
+                    const respuestasAspitanteOtis = Object.values(preguntasAgrupadas);
+                    
+                    response.render('Psicologos/cuadernilloRespuestasOtis.ejs', {
+                        datosPersonales: datosPersonales || [],
+                        respuestasCorrectas: respuestasCorrectas || 0,
+                        tiempoTotal: tiempoTotal || 0,
+                        respuestasAspitanteOtis: respuestasAspitanteOtis || [],
+                        aspirante: request.params.idAspirante || null,
+                        grupo: request.params.idGrupo || null,
+                        idInstitucion: request.params.idInstitucion || null,
+                    });
+
+                }).catch((error) => {
+                    console.log(error);
+                })
+            }).catch((error) => {
+                console.log(error);
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+    }).catch((error) => {
+        console.log(error);
+    });
+};
+
+/*
+ * CUADERNILLO COLORES
+*/
+exports.getCuadernilloColores = (request, response, next) => {
+    // Obtener los datos personales del aspirante
+    Prueba.getDatosPersonalesAspiranteColores(request.params.idGrupo, request.params.idAspirante)
+    .then(([rows, fieldData]) => {
+        const datosPersonales = rows;
+        
+        // Obtener todas las selecciones de colores
+        CuadernilloColores.getSeleccionesColores(request.params.idGrupo, request.params.idAspirante)
+        .then(([rows, fieldData]) => {
+            // Separar las selecciones por fase
+            const seleccionesFase1 = rows.filter(row => row.fase === 1)
+                                        .sort((a, b) => a.posicion - b.posicion);
+            const seleccionesFase2 = rows.filter(row => row.fase === 2)
+                                        .sort((a, b) => a.posicion - b.posicion);
+            
+            response.render('Psicologos/cuadernilloColores.ejs', {
+                datosPersonales: datosPersonales || [],
+                seleccionesFase1: seleccionesFase1 || [],
+                seleccionesFase2: seleccionesFase2 || [],
+                aspirante: request.params.idAspirante || null,
+                grupo: request.params.idGrupo || null,
+                idInstitucion: request.params.idInstitucion || null,
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+    }).catch((error) => {
+        console.log(error);
+    });
+};
+
+
+
+//////////////
+//ASPIRANTES//
+//////////////
 const PruebaColores = require('../models/prueba.model');
 const PruebaOtis = require('../models/prueba.model');
 const OpcionOtis = require('../models/opcionOtis.model.js');
-const Aspirante = require('../models/aspirante.model');
+
+exports.getIntruccionesOtis = (request, response, next) => {
+    response.render('Aspirantes/instruccionesOtis');
+};
+
+exports.postInstruccionesOtis = (req, res) => {
+    res.redirect('/aspirante/datos-personales-otis');
+};
+
+// Mostrar instrucciones colores
+exports.getInstruccionesColores = (request, response, next) => {
+    response.render('Aspirantes/instruccionesColores');
+};
+
+exports.postInstruccionesColores = (req, res) => {
+    res.redirect('/aspirante/datos-personales-colores');
+};
 
 // Formulario datos personales
 exports.getDatosPersonalesOtis = (request, response, next) => {
@@ -11,6 +185,10 @@ exports.getDatosPersonalesOtis = (request, response, next) => {
 
 exports.getDatosPersonalesColores = (request, response, next) => {
     response.render('Aspirantes/datosPersonalesColores');
+};
+
+exports.get_respuestas_enviadas = (request, response, next) => {
+    response.send('Respuestas enviadas');
 };
 
 // Procesar datos personales y pasar a la prueba
@@ -30,7 +208,7 @@ exports.postDatosPersonalesOtis = (request, response, next) => {
     response.redirect('/aspirante/prueba-otis');
 };
 
-//Obtener las areas, preguntas y opciones de la prueba OTIS
+//Obtener las areas, preguntas y opciones
 exports.obtenerPreguntas = async (req, res, next) => {
     try {
         const [areasDB] = await PruebaOtis.getAreaOtis();
@@ -69,7 +247,7 @@ exports.obtenerPreguntas = async (req, res, next) => {
     }
 }
 
-// Obtener toda la prueba OTIS
+// Obtener toda la prueba
 exports.getPruebaOtis = (request, response, next) => {
     if (!request.session.datosPersonalesOtis) {
         return response.redirect('/aspirante/datos-personales-otis');
@@ -146,8 +324,8 @@ exports.postGuardarRespuestas = async (request, response) => {
             [values]
         );
 
-        // Obtener datos personales desde sesión
-        const datosPersonales = request.session.datosPersonalesOtis || {
+         // Obtener datos personales desde sesión
+         const datosPersonales = request.session.datosPersonalesOtis || {
             nombre: "Usuario",
             apellidoPaterno: "",
             apellidoMaterno: "",
@@ -194,7 +372,7 @@ exports.postGuardarRespuestas = async (request, response) => {
     return response.json({ success: true, redirectUrl: '/aspirante/prueba-completada' });
 };
 
-// Procesar datos personales y pasar a la prueba de colores
+// Procesar datos personales y pasar a la prueba
 exports.postDatosPersonalesColores = (request, response, next) => {
     const { nombre, apellidoPaterno, apellidoMaterno, puestoSolicitado } = request.body;
     
@@ -402,4 +580,8 @@ exports.postGuardarSeleccionesColores = (request, response) => {
 exports.getPruebaCompletada = (request, response, next) => {
     response.render('Aspirantes/pruebaCompletada', {
     });
+};
+
+exports.getRespuestasEnviadas = (request, response, next) => {
+    response.render('Aspirantes/respuestasEnviadas');
 };
