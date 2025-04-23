@@ -98,6 +98,25 @@ module.exports = class Prueba{
         return Promise.all(promesas);
     };               
 
+    static getPreguntas16PF(){}
+
+    static getPreguntasHartman(){}
+
+    static getPreguntasKostick(){}
+
+    static getPreguntasTerman(){}
+
+
+    static addRespuestaOtis(){}
+
+    static addRespuesta16PF(){}
+
+    static addRespuestaHartman(){}
+
+    static addRespuestaKostick(){}
+
+    static addRespuestaTerman(){}
+
     static fetchColores(){
         return db.execute('SELECT * FROM colores ORDER BY numeroColor');
     }
@@ -154,6 +173,99 @@ module.exports = class Prueba{
             WHERE idAspirante = ? AND idGrupo = ? AND idPrueba = ?`,
             [idAspirante, idGrupo, idPrueba]
         );
+    }
+
+    static getRespuestasOtis(idAspirante, idGrupo){
+        return db.execute(`
+                SELECT u.nombreUsuario, u.apellidoPaterno, u.apellidoMaterno, 
+                ao.idAreaOtis, ao.nombreAreaOtis,
+                SUM(CASE WHEN o.esCorrecta = 1 THEN 1 ELSE 0 END) 
+                AS respuestasCorrectas,
+                SUM(CASE WHEN o.escorrecta = 0 THEN 1 ELSE 0 END) 
+                AS respuestasIncorrectas,
+                SUM(CASE WHEN o.esCorrecta IS NULL THEN 1 ELSE 0 END) 
+                AS sinRespuesta,
+
+                ROUND((SUM(CASE WHEN o.esCorrecta = 1 THEN 1 ELSE 0 END) 
+                * 100.0) 
+                /  
+                NULLIF(SUM(CASE WHEN o.esCorrecta IS NOT NULL THEN 1 ELSE 0 
+                END), 0), 2) AS porcentajeCorrectas  
+
+                FROM aspirantes a  
+
+                JOIN usuarios u ON a.idUsuario = u.idUsuario
+
+                JOIN gruposaspirantes ga ON a.idAspirante = ga.idAspirante 
+                AND ga.idGrupo = ?
+
+                LEFT JOIN respuestaotisaspirante ra ON 
+                a.idAspirante = ra.idAspirante
+
+                LEFT JOIN opcionesotis o ON ra.idOpcionOtis = o.idOpcionOtis
+
+                LEFT JOIN preguntasotis p ON 
+                ra.idPreguntaOtis = p.idPreguntaOtis
+
+                LEFT JOIN areasotis ao ON p.idAreaOtis = ao.idAreaOtis
+
+                WHERE a.idAspirante = ?
+
+                GROUP BY u.nombreUsuario, u.apellidoPaterno, u.apellidoMaterno,
+                ao.idAreaOtis, ao.nombreAreaOtis
+            `, [idGrupo, idAspirante]);
+    }
+
+    static getPuntajeBrutoOtis(idAspirante, idGrupo){
+        return db.execute(`
+                SELECT COUNT(*) as puntajeBruto
+                FROM respuestaotisaspirante, opcionesotis
+                WHERE idAspirante = ?
+                AND idGrupo = ?
+                AND opcionesotis.idOpcionOtis = 
+                respuestaotisaspirante.idOpcionOtis
+                AND opcionesotis.esCorrecta = 1
+                GROUP BY idAspirante
+            `, [idAspirante, idGrupo]);
+    }
+
+    static getRespuestasColores(idAspirante, idGrupo) {
+        return db.execute(`
+            SELECT fase, idColor, posicion
+            FROM seleccionescolores
+            WHERE idAspirante = ? AND idGrupo = ?
+            ORDER BY fase, posicion
+        `, [idAspirante, idGrupo]);
+    }
+
+    
+    static getSeleccionesColores(idGrupo, idAspirante) {
+        return db.execute(`
+            SELECT 
+                SC.idSeleccionColores, 
+                SC.idColor, 
+                SC.posicion, 
+                SC.fase,
+                C.nombreColor, 
+                C.numeroColor, 
+                C.hexColor  
+            FROM seleccionescolores SC
+            JOIN colores C ON SC.idColor = C.idColor
+            WHERE SC.idAspirante = ?
+            AND SC.idGrupo = ?
+            AND SC.idPrueba = 6
+            ORDER BY SC.fase, SC.posicion
+            `, [idAspirante, idGrupo]);
+    }   
+
+    // Nombre aspirante analisis colores
+    static getInformacionAspirante(idAspirante) {
+        return db.execute(`
+            SELECT u.nombreUsuario, u.apellidoPaterno, u.apellidoMaterno
+            FROM usuarios u
+            JOIN aspirantes a ON u.idUsuario = a.idUsuario
+            WHERE a.idAspirante = ?
+        `, [idAspirante]);
     }
 
 }
