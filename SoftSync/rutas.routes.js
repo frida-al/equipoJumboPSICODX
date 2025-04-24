@@ -6,6 +6,13 @@ router.get(
   aspiranteController.get_instrucciones
 );
 
+router.get(
+  "/datosAspirante/:idPrueba",
+  isAuth,
+  verificarDatosPersonales,
+  aspiranteController.get_datosA
+);
+
 router.post(
   "/preguntasPrueba/:idPrueba",
   isAuth,
