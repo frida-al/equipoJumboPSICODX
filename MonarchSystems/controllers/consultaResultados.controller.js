@@ -93,9 +93,9 @@ exports.get_analisisHartman = async (request, response, next) => {
          console.error("Error al obtener o procesar los datos de Hartman:", error);
          response.status(500).send("Error al procesar el análisis de Hartman");
      }
- };
+};
 
- async function obtenerCalificacion(aspiranteId, grupoId) {
+async function obtenerCalificacion(aspiranteId, grupoId) {
     try {
         const [rows, fields] = await consultaResultados.fetchCalificacionTerman(aspiranteId, grupoId);
         return { filas: rows, campos: fields };
@@ -117,7 +117,7 @@ async function obtenerSerie(aspiranteId, grupoId, serieId, calificacionId) {
       console.error("Error al obtener los resultados de la serie:", error);
       return { puntuacion: 0, rango: '' }; 
     }
-  }
+}
 
 function reglaDeTres(num,max) {
     return ((num * 100) / max)
