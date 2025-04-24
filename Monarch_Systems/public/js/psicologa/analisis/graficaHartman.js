@@ -118,6 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ticks: {
               autoSkip: false,
               maxRotation: 90,
+              font: {
+                weight: 'bold'
+              },
+              color: 'black'
             }
           },
           y: {
@@ -132,7 +136,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (value >= 36) return 'PROMEDIO';
                 if (value >= 20) return 'POBRE';
                 return 'MUY POBRE';
-              }
+              },
+              font: {
+                weight: 'bold'
+              },
+              color: 'black'
             },
             grid: {
               drawTicks: true,
