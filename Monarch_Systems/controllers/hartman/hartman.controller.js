@@ -28,7 +28,7 @@ exports.get_HartmanFase1 = async (request, response, next) => {
             estatus: 1,
         });
 
-        response.render('aspirante/fase_hartman.pug', {
+        response.render('hartman/fase_hartman.ejs', {
             idsPreguntasHartman: rows.map(row => row.idPreguntaHartman),
             numerosPreguntas: rows.map(row => row.idPreguntaHartman),
             preguntasHartman: rows.map(row => row.preguntaHartman),
@@ -91,7 +91,7 @@ exports.get_HartmanFase2 = async (request, response, next) => {
         const fasePregunta = 2;
         const [rows] = await hartman.fetchFase1(fasePregunta);
 
-        response.render('aspirante/fase_hartman.pug', {
+        response.render('hartman/fase_hartman.ejs', {
             numerosPreguntas: rows.map(row => row.idPreguntaHartman),
             preguntasHartman: rows.map(row => row.preguntaHartman),
             fase1: false,

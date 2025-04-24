@@ -45,7 +45,7 @@ class Hartman {
             SELECT idPreguntaHartman, respuestaAbierta, tiempoRespuesta
             FROM respuestashartman
             WHERE idAspirante = ? AND idGrupo = ?
-            GROUP BY idPreguntaHartman
+            GROUP BY idPreguntaHartman, respuestaAbierta, tiempoRespuesta
             ORDER BY idPreguntaHartman ASC
           `;
           const [rows] = await db.execute(query, [idAspirante, idGrupo]);

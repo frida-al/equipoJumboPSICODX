@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Respuestas y Resultados</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="/css/stylesLayout.css">
+  <% include ../includes/navbar %>
+  <script src="/js/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <%- body %>
+
+  <section class="section">
+    <div class="container" id="loggin"
+      data-nombre-completo="<%= nombreCompleto %>"
+      data-nombre-prueba="<%= nombrePrueba %>">
+      
+      <h1 class="title has-text-centered">Respuestas de <%= nombrePrueba %></h1>
+      <h2 class="subtitle has-text-centered is-size-6"><%= nombreCompleto %></h2>
+
+      <% const itemsPerPage = 40; %>
+      <% const totalPages = Math.ceil(aspirantes.length / itemsPerPage); %>
+
+      <% for (let pageIndex = 0; pageIndex < totalPages; pageIndex++) { %>
+        <% const startIdx = pageIndex * itemsPerPage; %>
+        <% const pageItems = aspirantes.slice(startIdx, startIdx + itemsPerPage); %>
+
+        <% if (pageIndex > 0) { %>
+          <div class="page-break"></div>
+        <% } %>
+
+        <% const halfPoint = Math.ceil(pageItems.length / 2); %>
+        <% const leftItems = pageItems.slice(0, halfPoint); %>
+        <% const rightItems = pageItems.slice(halfPoint); %>
+
+        <div class="columns is-mobile is-gapless">
+          <div class="column">
+            <table class="table is-striped is-hoverable is-bordered compact-table">
+              <thead>
+                <tr>
+                  <th>ID Pregunta</th>
+                  <th>Respuesta</th>
+                  <th>Tiempo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% leftItems.forEach(item => { %>
+                  <tr>
+                    <td><%= item.idPreguntas %></td>
+                    <td><%= item.respuestaAbierta %></td>
+                    <td><%= item.tiempoRespuesta %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="column">
+            <table class="table is-striped is-hoverable is-bordered compact-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Resp.</th>
+                  <th>T</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% rightItems.forEach(item => { %>
+                  <tr>
+                    <td><%= item.idPreguntas %></td>
+                    <td><%= item.respuestaAbierta %></td>
+                    <td><%= item.tiempoRespuesta %></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% } %>
+
+      <% if (nombrePrueba === 'Inventario de Personalidad y Valores Hartman') { %>
+        <% include ../includes/resultadosPruebas/interpretacionHartman %>
+      <% } %>
+
+      <% if (aspirantes.length === 0) { %>
+        <p class="has-text-centered">No se encontraron respuestas para los criterios especificados.</p>
+      <% } %>
+
+      <div class="has-text-centered mt-4">
+        <a class="button is-link is-light" href="/psicologa/consultaAspirantes">← Regresar</a>
+      </div>
+    </div>
+  </section>
+
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+</body>
+</html>
