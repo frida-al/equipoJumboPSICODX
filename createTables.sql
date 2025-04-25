@@ -108,6 +108,15 @@ CREATE TABLE parametros16pf(
     IM INT(5) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-------------------------------------------------------------------------------------------------------------NUEVA-------------------------------------------------------
+CREATE TABLE interpretaciones16PF (
+	parametro varchar(5) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+	nivel1 varchar(350) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+    nivel2 varchar(350) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL,
+    nivel3 varchar(350) CHARACTER SET utf8 COLLATE utf8_spanish2_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
   ALTER TABLE `opciones16pf`
   ADD PRIMARY KEY (`idOpcion16PF`),
   ADD KEY `opciones16PF_ibfk_1` (`idPregunta16PF`);
