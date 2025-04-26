@@ -1,3 +1,18 @@
+<%- include('includes/_navbarP')%>
+<style>
+  .fullHeight {
+    min-height: 160vh;
+    margin-top: 20px;
+  }
+  @media print {
+    .navbar,
+    .footer,
+    .descargar,
+    footer {
+      display: none;
+    }
+  }
+</style>
 <div class="section fullHeight">
   <div class="container is-max-desktop mt-5">
     <div class="title has-text-weight-semibold mb-2">
@@ -13,118 +28,755 @@
     <div class="has-items-centered">
       <canvas id="graph"> </canvas>
     </div>
+    <% if (prueba === 'El inventario de Percepción Kostick'){ %>
+      <div class="columns">
+      <div class="column">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Dimensiones de comportamiento</th>
+              <th>Factores</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Adaptación al Trabajo</th>
+              <td>C D R</td>
+            </tr>
+            <tr>
+              <th>Naturaleza social</th>
+              <td>O B S X</td>
+            </tr>
+            <tr>
+              <th>Modo de Vida</th>
+              <td>V T</td>
+            </tr>
+            <tr>
+              <th>Liderazgo</th>
+              <td>I P L</td>
+            </tr>
+            <tr>
+              <th>Grado de Energía</th>
+              <td>A G N</td>
+            </tr>
+            <tr>
+              <th>Subordinación</th>
+              <td>W F</td>
+            </tr>
+            <tr>
+              <th>Naturaleza Emocional</th>
+              <td>K E Z</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <%}%>
+
+    <div id="Interpretacion">
+      <div class="title">Interpretación </div>
+      <div id="textos"></div>
+    </div>
+  </div>
+  <br />
+  <div class="columns">
+    <div class="column has-text-centered">
+      <button
+        class="button descargar is-primary has-text-warning"
+        onclick="descargar()"
+      >
+        Descargar
+      </button>
+    </div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+  function descargar() {
+    window.print();
+  }
+</script>
+
+<script>
+  function insertarInterpretacionKostick(valores, interpretaciones) {
+    const interpretacionDiv = document.getElementById('textos');
+  
+    // Interpretación para extremos
+
+    let i = 0;
+
+    // SUBORDINACIÓN ----------------------------------------------
+
+    if (valores.W >= 70 || valores.W <= 20 || valores.F >= 70 || valores.F <= 20) {
+      const s = document.createElement('div');
+      s.className = 'subtitle';
+      s.textContent = 'Subordinación'
+      interpretacionDiv.appendChild(s);
+
+      // W
+      if (valores.W >= 70) {
+        i = 38;
+
+        const positivo = document.createElement('p');
+        positivo.textContent = interpretaciones[i].positivo;
+        interpretacionDiv.appendChild(positivo);
+    
+        const negativo = document.createElement('p');
+        negativo.textContent = interpretaciones[i].negativo;
+        interpretacionDiv.appendChild(negativo);
+      } else if (valores.W <= 20){
+        i = 39;
+
+        const positivo = document.createElement('p'); 
+        positivo.textContent = interpretaciones[i].positivo;
+        interpretacionDiv.appendChild(positivo);
+    
+        const negativo = document.createElement('p');
+        negativo.textContent = interpretaciones[i].negativo;
+        interpretacionDiv.appendChild(negativo);
+      }
+
+      // F
+      if (valores.F >= 70) {
+        i = 36;
+
+        const positivo = document.createElement('p');
+        positivo.textContent = interpretaciones[i].positivo;
+        interpretacionDiv.appendChild(positivo);
+    
+        const negativo = document.createElement('p');
+        negativo.textContent = interpretaciones[i].negativo;
+        interpretacionDiv.appendChild(negativo);
+      } else if (valores.F <= 20){
+        i = 37;
+
+        const positivo = document.createElement('p'); 
+        positivo.textContent = interpretaciones[i].positivo;
+        interpretacionDiv.appendChild(positivo);
+    
+        const negativo = document.createElement('p');
+        negativo.textContent = interpretaciones[i].negativo;
+        interpretacionDiv.appendChild(negativo);
+      }
+    }
+
+
+    // NATURALEZA EMOCIONAL ----------------------------------------------
+  if (valores.K >= 70 || valores.K <= 20 || valores.E >= 70 || valores.E <= 20 || valores.Z >= 70 || valores.Z <= 20){
+    const ne = document.createElement('div');
+    ne.className = 'subtitle';
+    ne.textContent = 'Naturaleza Emocional'
+    interpretacionDiv.appendChild(ne);
+
+    // K
+    
+    if (valores.K >= 70) {
+      i = 34;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.K <= 20){
+      i = 35;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    // E
+    if (valores.E >= 70) {
+      i = 32;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.E <= 20){
+      i = 33;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);      
+    }
+
+    // Z
+    if (valores.Z >= 70) {
+      i = 30;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.Z <= 20){
+      i = 31;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);      
+    }
+  }
+    // ADAPTACION AL TRABAJO ----------------------------------------------
+    if(valores.C >= 70 || valores.C <= 20 || valores.D >= 70 || valores.D <= 20 || valores.R >= 70 || valores.R <= 20){
+    const aat = document.createElement('div');
+    aat.className = 'subtitle';
+    aat.textContent = 'Adaptación al Trabajo'
+    interpretacionDiv.appendChild(aat);
+
+    // C
+ 
+    if (valores.C >= 70) {
+      i = 28;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.C <= 20){
+      i = 29;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    // D
+    if (valores.D >= 70) {
+      i = 26;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.D <= 20){
+      i = 27;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);      
+    }
+
+    // R
+    if (valores.R >= 70) {
+      i = 24;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.R <= 20){
+      i = 25;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);      
+    }
+  }
+    // NATURALEZA SOCIAL ----------------------------------------------
+    if (valores.X >= 70 || valores.X <= 20 || valores.S >= 70 || valores.S <= 20 || valores.B >= 70 || valores.B <= 20 || valores.O >= 70 || valores.O <= 20){
+    const ns = document.createElement('div');
+    ns.className = 'subtitle';
+    ns.textContent = 'Naturaleza Social'
+    interpretacionDiv.appendChild(ns);
+
+    // O
+    if (valores.O >= 70) {
+      i = 22;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+
+    } else if (valores.O <= 20){
+      i = 23;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    // B
+    if (valores.B >= 70) {
+      i = 20;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.B <= 20){
+      i = 21;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);      
+    }
+
+    // S
+    if (valores.S >= 70) {
+      i = 18;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.S <= 20){
+      i = 19;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);      
+    }
+
+    // X
+    if (valores.X >= 70) {
+      i = 16;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.X <= 20){
+      i = 17;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);      
+    }
+  }
+    // MODO DE VIDA ----------------------------------------------
+
+    if(valores.T >= 80 || valores.T <= 10 || valores.V >= 70 || valores.T <= 20 ){
+    const mdv = document.createElement('div');
+    mdv.className = 'subtitle';
+    mdv.textContent = 'Modo de Vida'
+    interpretacionDiv.appendChild(mdv);
+
+    // V
+    if (valores.V >= 70) {
+      i = 14;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.V <= 20){
+      i = 15;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    // T
+    if (valores.T >= 80) {
+      i = 12;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.T <= 10){
+      i = 13;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+  }
+    // LIDERAZGO ----------------------------------------------
+if (valores.L >= 70 || valores.L <= 20 ||valores.P >= 70 || valores.P <= 10 || valores.I >= 70 || valores.L <= 20 ){
+    const l = document.createElement('div');
+    l.className = 'subtitle';
+    l.textContent = 'Liderazgo'
+    interpretacionDiv.appendChild(l);
+
+    // I
+    if (valores.I >= 70) {
+      i = 10;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.I <= 20){
+      i = 11;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    // P
+    if (valores.P >= 70) {
+      i = 8;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.P <= 10){
+      i = 9;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo; 
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    //L
+    if (valores.L >= 70) {
+      i = 6;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.L <= 20){
+      i = 7;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+  }
+    // GRADO DE ENERGIA ----------------------------------------------
+if (valores.N >= 70 || valores.N <= 20 || valores.G >= 70 || valores.G <= 20 || valores.A >= 70 || valores.A <= 20){
+    const gde = document.createElement('div');
+    gde.className = 'subtitle';
+    gde.textContent = 'Grado de Energía'
+    interpretacionDiv.appendChild(gde);
+
+    // A
+    if (valores.A >= 70) {
+      i = 4;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.A <= 20){
+      i = 5;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    // G
+    if (valores.G >= 80) {
+      i = 2;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.G <= 20){
+      i = 3;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+    // N
+    if (valores.N >= 70) {
+      i = 0;
+
+      const positivo = document.createElement('p');
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    } else if (valores.N <= 20){
+      i = 1;
+
+      const positivo = document.createElement('p'); 
+      positivo.textContent = interpretaciones[i].positivo;
+      interpretacionDiv.appendChild(positivo);
+  
+      const negativo = document.createElement('p');
+      negativo.textContent = interpretaciones[i].negativo;
+      interpretacionDiv.appendChild(negativo);
+    }
+
+  }
+  }
+</script>
+  
 
 <script class="grafica">
-  const valores = <%- JSON.stringify(valores) %>;
-  const prueba = <%- JSON.stringify(prueba) %>;
-  let data; // Initialize data variable
-  const ctx = document.getElementById("graph").getContext("2d");
+                 const valores = <%- JSON.stringify(valores) %>;
+                 let data;
+                 const ctx = document.getElementById("graph").getContext("2d");
+                 const prueba = <%- JSON.stringify(prueba) %>;
 
-  console.log(prueba); // Debugging
-  console.log(valores); // Debugging
+                 if (prueba === "El inventario de Percepción Kostick") {
+                   const interpretaciones = <%- JSON.stringify(interpretaciones) %>;
+                   const descripcionesKostickBaja = {
+                   "C": "Desordenada",
+                   "D": "No Detallista",
+                   "R": "Práctico",
+                   "O": "No Nec. Afecto",
+                   "B": "Individualista",
+                   "S": "Retraído",
+                   "X": "Reservado",
+                   "V": "Trabajo de Oficina",
+                   "T": "No Activo",
+                   "I": "Lento",
+                   "P": "Sin Don de Mando",
+                   "L": "Sin Liderazgo",
+                   "A": "Conformista",
+                   "G": "No es Esfuerza",
+                   "N": "No Persevera",
+                   "W": "Se Ajusta a Cambios",
+                   "F": "Rebelde",
+                   "K": "Pasivo",
+                   "E": "Expresivo",
+                   "Z": "Nec. de Estabilidad"
+                  };
+                  const descripcionesKostickAlta = {
+                   "C": "Tipo Organizado",
+                   "D": "Trabaja con Detalles",
+                   "R": "Tipo Teórico",
+                   "O": "Nec. Afecto",
+                   "B": "Nec. Pertenencia",
+                   "S": "Extensión Social",
+                   "X": "Nec. Reconocimiento",
+                   "V": "Vigor Físico",
+                   "T": "Activo",
+                   "I": "Impulsivo",
+                   "P": "Necesidad de Controlar",
+                   "L": "Liderazgo",
+                   "A": "Nec. de Logro",
+                   "G": "Tenaz e intensp",
+                   "N": "Perseverante",
+                   "W": "Nec. de reglas",
+                   "F": "Sumiso",
+                   "K": "A la Defensiva",
+                   "E": "Inhibido",
+                   "Z": "Nec. de Cambio"
+                  };
+                    data = {
+                     labels: [
+                       "C",
+                       "D",
+                       "R",
+                       "O",
+                       "B",
+                       "S",
+                       "X",
+                       "V",
+                       "T",
+                       "I",
+                       "P",
+                       "L",
+                       "A",
+                       "G",
+                       "N",
+                       "W",
+                       "F",
+                       "K",
+                       "E",
+                       "Z",
+                     ],
+                     datasets: [
+                       {
+                         label: "Gráfico de Resultados Kostick",
+                         data: [
+                           valores.C,
+                           valores.D,
+                           valores.R,
+                           valores.O,
+                           valores.B,
+                           valores.S,
+                           valores.X,
+                           valores.V,
+                           valores.T,
+                           valores.I,
+                           valores.P,
+                           valores.L,
+                           valores.A,
+                           valores.G,
+                           valores.N,
+                           valores.W,
+                           valores.F,
+                           valores.K,
+                           valores.E,
+                           valores.Z,
+                         ],
+                         backgroundColor: [
+                           "rgba(173, 216, 230, 0.7)",
+                           "rgba(173, 216, 230, 0.7)",
+                           "rgba(173, 216, 230, 0.7)",
+                           "rgba(70, 130, 180, 0.7)",
+                           "rgba(70, 130, 180, 0.7)",
+                           "rgba(70, 130, 180, 0.7)",
+                           "rgba(70, 130, 180, 0.7)",
+                           "rgba(135, 206, 235, 0.7)",
+                           "rgba(135, 206, 235, 0.7)",
+                           "rgba(30, 144, 255, 0.7)",
+                           "rgba(30, 144, 255, 0.7)",
+                           "rgba(30, 144, 255, 0.7)",
+                           "rgba(0, 0, 205, 0.7)",
+                           "rgba(0, 0, 205, 0.7)",
+                           "rgba(0, 0, 205, 0.7)",
+                           "rgba(65, 105, 225, 0.7)",
+                           "rgba(65, 105, 225, 0.7)",
+                           "rgba(25, 25, 112, 0.7)",
+                           "rgba(25, 25, 112, 0.7)",
+                           "rgba(25, 25, 112, 0.7)",
+                         ],
+                         borderColor: [
+                           "rgba(173, 216, 230, 1)",
+                           "rgba(173, 216, 230, 1)",
+                           "rgba(173, 216, 230, 1)",
+                           "rgba(70, 130, 180, 1)",
+                           "rgba(70, 130, 180, 1)",
+                           "rgba(70, 130, 180, 1)",
+                           "rgba(70, 130, 180, 1)",
+                           "rgba(135, 206, 235, 1)",
+                           "rgba(135, 206, 235, 1)",
+                           "rgba(30, 144, 255, 1)",
+                           "rgba(30, 144, 255, 1)",
+                           "rgba(30, 144, 255, 1)",
+                           "rgba(0, 0, 205, 1)",
+                           "rgba(0, 0, 205, 1)",
+                           "rgba(0, 0, 205, 1)",
+                           "rgba(65, 105, 225, 1)",
+                           "rgba(65, 105, 225, 1)",
+                           "rgba(25, 25, 112, 1)",
+                           "rgba(25, 25, 112, 1)",
+                           "rgba(25, 25, 112, 1)",
+                         ],
+                         borderWidth: 1,
+                       },
+                     ],
+                   };
 
-  if (prueba === "El inventario de Percepción Kostick") {
-     data = {
-      labels: [
-        "C",
-        "D",
-        "R",
-        "O",
-        "B",
-        "S",
-        "X",
-        "V",
-        "T",
-        "I",
-        "P",
-        "L",
-        "A",
-        "G",
-        "N",
-        "W",
-        "F",
-        "K",
-        "E",
-        "Z",
-      ],
-      datasets: [
-        {
-          label: "Adaptación al trabajo",
-          data: [
-            valores.C,
-            valores.D,
-            valores.R,
-            valores.O,
-            valores.B,
-            valores.S,
-            valores.X,
-            valores.V,
-            valores.T,
-            valores.I,
-            valores.P,
-            valores.L,
-            valores.A,
-            valores.G,
-            valores.N,
-            valores.W,
-            valores.F,
-            valores.K,
-            valores.E,
-            valores.Z,
-          ],
-          backgroundColor: [
-            "rgba(173, 216, 230, 0.7)",
-            "rgba(173, 216, 230, 0.7)",
-            "rgba(173, 216, 230, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(135, 206, 235, 0.7)",
-            "rgba(135, 206, 235, 0.7)",
-            "rgba(30, 144, 255, 0.7)",
-            "rgba(30, 144, 255, 0.7)",
-            "rgba(30, 144, 255, 0.7)",
-            "rgba(0, 0, 205, 0.7)",
-            "rgba(0, 0, 205, 0.7)",
-            "rgba(0, 0, 205, 0.7)",
-            "rgba(65, 105, 225, 0.7)",
-            "rgba(65, 105, 225, 0.7)",
-            "rgba(25, 25, 112, 0.7)",
-            "rgba(25, 25, 112, 0.7)",
-            "rgba(25, 25, 112, 0.7)",
-          ],
-          borderColor: [
-            "rgba(173, 216, 230, 1)",
-            "rgba(173, 216, 230, 1)",
-            "rgba(173, 216, 230, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(135, 206, 235, 1)",
-            "rgba(135, 206, 235, 1)",
-            "rgba(30, 144, 255, 1)",
-            "rgba(30, 144, 255, 1)",
-            "rgba(30, 144, 255, 1)",
-            "rgba(0, 0, 205, 1)",
-            "rgba(0, 0, 205, 1)",
-            "rgba(0, 0, 205, 1)",
-            "rgba(65, 105, 225, 1)",
-            "rgba(65, 105, 225, 1)",
-            "rgba(25, 25, 112, 1)",
-            "rgba(25, 25, 112, 1)",
-            "rgba(25, 25, 112, 1)",
-          ],
-          borderWidth: 1,
-        },
-      ],
-    };
-    const config = {
+                   const config = {
     type: "bar",
     data: data,
     options: {
@@ -141,150 +793,98 @@
           title: {
             display: true,
             text: "Factores",
-          },
-        },
-      },
-    },
-  };
-  new Chart(ctx, config);
-  } else if (prueba === "Personalidad 16 Factores (16 PF)") {
-     data = {
-      labels: [
-        "A",
-        "B",
-        "C",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "L",
-        "M",
-        "N",
-        "O",
-        "Q1",
-        "Q2",
-        "Q3",
-        "Q4",
-      ],
-      datasets: [
-        {
-          label: "Personalidad 16 Factores",
-          data: [
-            valores.A,
-            valores.B,
-            valores.C,
-            valores.E,
-            valores.F,
-            valores.G,
-            valores.H,
-            valores.I,
-            valores.L,
-            valores.M,
-            valores.N,
-            valores.O,
-            valores.Q1,
-            valores.Q2,
-            valores.Q3,
-            valores.Q4,
-          ],
-          backgroundColor: [
-            "rgba(173, 216, 230, 0.7)",
-            "rgba(173, 216, 230, 0.7)",
-            "rgba(173, 216, 230, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(70, 130, 180, 0.7)",
-            "rgba(135, 206, 235, 0.7)",
-            "rgba(135, 206, 235, 0.7)",
-            "rgba(30, 144, 255, 0.7)",
-            "rgba(30, 144, 255, 0.7)",
-            "rgba(30, 144, 255, 0.7)",
-            "rgba(0, 0, 205, 0.7)",
-            "rgba(0, 0, 205, 0.7)",
-            "rgba(0, 0, 205, 0.7)",
-            "rgba(65, 105, 225, 0.7)",
-          ],
-          borderColor: [
-            "rgba(173, 216, 230, 1)",
-            "rgba(173, 216, 230, 1)",
-            "rgba(173, 216, 230, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(70, 130, 180, 1)",
-            "rgba(135, 206, 235, 1)",
-            "rgba(135, 206, 235, 1)",
-            "rgba(30, 144, 255, 1)",
-            "rgba(30, 144, 255, 1)",
-            "rgba(30, 144, 255, 1)",
-            "rgba(0, 0, 205, 1)",
-            "rgba(0, 0, 205, 1)",
-            "rgba(0, 0, 205, 1)",
-            "rgba(65, 105, 225, 1)",
-          ],
-          borderWidth: 1,
-        },
-      ],
-    };
-
-    const descripciones = {
-      A: "Afiabilidad",
-      B: "Razonamiento",
-      C: "Estabilidad emocional",
-      E: "Dominancia",
-      F: "Vivacidad",
-      G: "Atención a las normas",
-      H: "Audacia social",
-      I: "Sensibilidad",
-      L: "Confianza",
-      M: "Abstracción",
-      N: "Astucia",
-      O: "Aprensión",
-      Q1: "Apertura al cambio",
-      Q2: "Autosuficiencia",
-      Q3: "Perfeccionismo",
-      Q4: "Tensión",
-    };
-
-    const config = {
-      type: "bar",
-      data: data,
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: "Valores"
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: "Factores"
-            }
-          }
-        },
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: function (context) {
-                const factor = context.label;
-                const valor = context.raw;
-                const descripcion = descripciones[factor] || factor;
-                return `${descripcion}: ${valor}`;
-              }
-            }
           }
         }
+      },
+      plugins: {
+        legend: {
+          display: false // Oculta la leyenda del label 'Ventas'
+        },
+        annotation: {
+          annotations: [
+            {
+              type: 'line',
+              yMin: 40,
+              yMax: 60,
+              borderColor: 'rgb(255, 0, 255)',
+              borderWidth: 2,
+              borderDash: [6, 6],
+              label: {
+                content: 'Límite 40',
+                enabled: true,
+                position: 'center'
+              }
+            },
+          ]
+        }
       }
-    };
+    },
+    plugins: [
+      {
+        id: 'etiquetasDuales',
+        afterDraw(chart) {
+          const ctx = chart.ctx;
+          const xAxis = chart.scales.x;
+          const baseY = chart.scales.y.getPixelForValue(0);
+          const topY = chart.chartArea.top;
 
-    const myChart = new Chart(document.getElementById("grafico16PF"), config);
-    new Chart(ctx, config);
-  }
-</script>
+          ctx.save();
+          ctx.font = "bold 12px Arial";
+          ctx.fillStyle = "#fffff";
 
+          chart.data.datasets.forEach(dataset => {
+            dataset.data.forEach((value, index) => {
+              const bar = chart.getDatasetMeta(0).data[index];
+              const x = bar.x;
+              const descripcionBaja = descripcionesKostickBaja[chart.data.labels[index]] || chart.data.labels[index];
+              const descripcionAlta = descripcionesKostickAlta[chart.data.labels[index]] || chart.data.labels[index];
+
+              // Etiquetas INFERIORES (base)
+              ctx.save();
+              ctx.textBaseline = "top";
+              ctx.translate(x - 3, baseY - 10);
+              ctx.rotate(-Math.PI/2);
+              ctx.fillText(descripcionBaja, 0, 0);
+              ctx.restore();
+
+              // Etiquetas SUPERIORES (tope)
+              ctx.save();
+              ctx.textBaseline = "bottom";
+              ctx.translate(x - 3, topY + 10);
+              ctx.rotate(Math.PI/2);
+              ctx.fillText(descripcionAlta, 0, 0);
+              ctx.restore();
+            });
+          });
+          ctx.restore();
+
+          // Dibujamos manualmente las líneas si no usamos el plugin de anotaciones
+          const y40 = chart.scales.y.getPixelForValue(40);
+          const y60 = chart.scales.y.getPixelForValue(60);
+          const chartArea = chart.chartArea;
+
+          ctx.save();
+          ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([6, 6]);
+
+          // Línea en y=40
+          ctx.beginPath();
+          ctx.moveTo(chartArea.left, y40);
+          ctx.lineTo(chartArea.right, y40);
+          ctx.stroke();
+
+          // Línea en y=60
+          ctx.beginPath();
+          ctx.moveTo(chartArea.left, y60);
+          ctx.lineTo(chartArea.right, y60);
+          ctx.stroke();
+
+          ctx.restore();
+        }
+      }
+    ]
+  };
+                 new Chart(ctx, config);
+                 insertarInterpretacionKostick(valores, interpretaciones);
+              }
