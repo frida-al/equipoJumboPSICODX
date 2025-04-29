@@ -1,0 +1,30 @@
+.site {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: minmax(0, 1fr);
+}
+.site main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#carrusel-series {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.serie-container {
+    scroll-margin-top: 70px;
+}
+
+.contenedor-botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contenedor-botones button{
+    margin: 20px !important;
+}

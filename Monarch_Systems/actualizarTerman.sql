@@ -17,10 +17,13 @@
 
 -- Borrar todo alv en orden de hijo a padre
 
+
 DROP TABLE opcionesterman;
 DROP TABLE respuestasterman;
-DROP TABLE preguntasterman;
 DROP TABLE resultadosseriesterman;
+DROP TABLE calificacionesterman;
+-- DROP TABLE progresosterman; No tienen esta tabla.
+DROP TABLE preguntasterman;
 DROP TABLE seriesterman;
 
 /*
@@ -66,6 +69,43 @@ CREATE TABLE `respuestasterman` (
   FOREIGN KEY (`idPreguntaTerman`) REFERENCES `preguntasterman`(`idPreguntaTerman`),
   FOREIGN KEY (`idPrueba`) REFERENCES `pruebas`(`idPrueba`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*
+    Creación de progresosTerman
+    ---------------------------------------------------
+*/
+
+CREATE TABLE `progresosterman` (
+  `idProgresoTerman` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `idAspirante` int(11) NOT NULL,
+  `idGrupo` int(11) NOT NULL,
+  `idSerieTermanActual` int(11) NULL,
+  `idPreguntaTerman` int(11) NULL,
+  `tiempoRestante` int(11) NULL,
+  `updatedAt` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (`idAspirante`) REFERENCES `usuarios`(`idUsuario`),
+  FOREIGN KEY (`idGrupo`) REFERENCES `grupos`(`idGrupo`),
+  FOREIGN KEY (`idSerieTermanActual`) REFERENCES `seriesterman`(`idSerieTerman`),
+  FOREIGN KEY (`idPreguntaTerman`) REFERENCES `preguntasterman`(`idPreguntaTerman`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+/*
+    Creación de calificacionesTerman
+    ---------------------------------------------------
+*/
+CREATE TABLE `calificacionesterman` (
+    `idCalificacionTerman` int(11) PRIMARY KEY AUTO_INCREMENT,
+    `idAspirante` int(11) NOT NULL,
+    `idGrupo` int(11) NOT NULL,
+    `puntosTotales` int(11) NOT NULL,
+    `rango` varchar(500) NOT NULL,
+    `coeficienteIntelectual` int(11) NOT NULL,
+    FOREIGN KEY (`idAspirante`) REFERENCES `usuarios`(`idUsuario`),
+    FOREIGN KEY (`idGrupo`) REFERENCES `grupos`(`idGrupo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 
 /*

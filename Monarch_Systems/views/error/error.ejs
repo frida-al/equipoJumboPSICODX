@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/styleError.css">
+</head>
+<body class="has-background-light">
+    <div class="site">
+        <header>
+            <% include ../includes/navbar.ejs %>
+        </header>
+        <main>
+            <section class="section"></section>
+            <div class="container has-text-centered">
+                <div class="box">
+                    <h1 class="title has-text-danger">¡Ups!</h1>
+                    <p class="subtitle"><%= message %></p>
+                    <% if (volverAtras) { %>
+                        <a id="regreso-inicio" class="button is-link mt-4" href="javascript:history.back()">← Volver atrás</a>
+                    <% } else { %>
+                        <a id="regreso-inicio" class="button is-link mt-4" href="/inicio/aspirante">← Regresar al inicio</a>
+                    <% } %>
+                </div>
+            </div>
+        </main>
+        <footer></footer>
+    </div>
+</body>
+</html>
+

@@ -30,3 +30,33 @@ table {
   margin-bottom: 20px;
 
   }
+  .contenedor-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contenedor-botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contenedor-botones button{
+    margin: 20px !important;
+  }
+  
+  #grafica-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  #grafica-container canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
+  .box {
+    width: 100%;
+  }
