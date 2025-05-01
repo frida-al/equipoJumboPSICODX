@@ -1,0 +1,26 @@
+.columns.is-mobile.is-gapless > .column { /* Aplica a los contenedores de las tablas */
+  overflow-x: auto;
+}
+
+.compact-table th,
+.compact-table td {
+  white-space: nowrap;
+}
+
+.compact-table th:nth-child(1),
+.compact-table td:nth-child(1) {
+  width: 80px;
+  min-width: 80px;
+}
+
+.compact-table th:nth-child(2),
+.compact-table td:nth-child(2) {
+  width: 60%;
+}
+
+.compact-table th:nth-child(3),
+.compact-table td:nth-child(3) {
+  width: 60px;
+  min-width: 60px;
+}
+

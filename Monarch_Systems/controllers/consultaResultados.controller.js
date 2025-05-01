@@ -1,23 +1,31 @@
+// Modelos
+const sesionesPruebas = require('../../models/pruebas/sesionesPruebas.model.js');
+const sesionPruebaModel = new sesionesPruebas();
+
+// - - - - - - - - - - - - - - - - - - - - - - - - 
+// Modelos de Hartman
+// - - - - - - - - - - - - - - - - - - - - - - - - 
 const consultaResultados = require('../../models/psicologa/consultaResultados.model');
- const {
+const {
      buscarValor, // Importa la función
-     DIM,
-     DIF,
-     dimGeneral,
-     dimPorcentaje,
-     INT,
-     DI,
-     DIS,
-     VQ,
-     Equilibrio_BQR,
-     Equilibrio_BQA,
-     Equilibrio_CQ1,
-     Equilibrio_CQ2
- } = require('../../../src/config/analisisHartman/encuentraValor');
- 
-/*
-*   OBTIENE ANALISIS DE HARTMAN DE LA BASE DE DATOS
-*/
+    DIM,
+    DIF,
+    dimGeneral,
+    dimPorcentaje,
+    INT,
+    DI,
+    DIS,
+    VQ,
+    Equilibrio_BQR,
+    Equilibrio_BQA,
+    Equilibrio_CQ1,
+    Equilibrio_CQ2
+} = require('../../../src/config/analisisHartman/encuentraValor');
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// Lógica de Hartman
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 exports.get_analisisHartman = async (request, response, next) => {
 
@@ -95,107 +103,169 @@ exports.get_analisisHartman = async (request, response, next) => {
      }
  };
 
- async function obtenerCalificacion(aspiranteId, grupoId) {
-    try {
-        const [rows, fields] = await consultaResultados.fetchCalificacionTerman(aspiranteId, grupoId);
-        return { filas: rows, campos: fields };
-    } catch (error) {
-        console.error("Error al obtener la calificación:", error);
-        return null;
-    }
-};
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+// Lógica de Terman
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-async function obtenerSerie(aspiranteId, grupoId, serieId, calificacionId) {
-    try {
-      const [rows] = await consultaResultados.fetchResultadosSerieTerman(aspiranteId, grupoId, serieId, calificacionId);
-      if (rows.length > 0) {
-        return { puntuacion: rows[0].puntuacion, rango: rows[0].rango };
-      } else {
-        return { puntuacion: 0, rango: '' };
-      }
-    } catch (error) {
-      console.error("Error al obtener los resultados de la serie:", error);
-      return { puntuacion: 0, rango: '' }; 
-    }
-  }
+function obtenerTotalPorSerie(numeroSerie) {
+    const totales = {
+        1: 16, 2: 22, 3: 30, 4: 18, 5: 24,
+        6: 20, 7: 20, 8: 17, 9: 18, 10: 22
+    };
+    return totales[numeroSerie] || 1; // Por si acaso
+}
 
-function reglaDeTres(num,max) {
-    return ((num * 100) / max)
+function reglaDeTres(valor, totalMaximo) {
+    return (valor / totalMaximo) * 100;
 }
 
 /*
-*   OBTENER ANALISIS DE TERMAN
+    OBTENER ANALISIS DE TERMAN
 */
 
-exports.getanalisisTerman = async (request, response, next) => {
+// - - - - - - - - - - - - - - - - - - - - - - - - 
+// Modelos de Terman
+// - - - - - - - - - - - - - - - - - - - - - - - - 
+const respuestasTermanModel = require('../../models/pruebas/terman/respuestasTerman.model.js');
+respuestasTerman = new respuestasTermanModel();
+
+const progresoTermanModel = require('../../models/pruebas/terman/progresoTerman.model.js');
+
+const calificacionesTerman = require('../../models/pruebas/terman/calificacionesTerman.model.js');
+const calificacionTerman = new calificacionesTerman();
+
+const resultadosSeriesTerman = require('../../models/pruebas/terman/resultadosSeriesTerman.model.js');
+const resultadoSerieTerman = new resultadosSeriesTerman();
+
+const usuariosModel = require('../../models/users.model.js');
+
+const terman = require('../../models/pruebas/terman/terman.model.js');
+const modeloTerman = new terman();
+
+
+
+// Middleware de apoyo para calificar Terman
+const calificarSerieTerman = require("../../middlewares/pruebas/calificarTerman");
+
+exports.get_analisisTerman = async (request, response, next) => {
     const idAspirante = request.params.idAspirante;
     const idGrupo = request.params.idGrupo;
-    console.log('Analisis Terman');
+    const idPrueba = 4;
+    const sesionAspirante = await sesionPruebaModel.fetchById({ idAspirante, idGrupo, idPrueba });
 
-    try{
-        const calificacionData = await obtenerCalificacion(idAspirante, idGrupo);
+    try {
+        // 1. Buscar calificación
+        const calificacionExistente = await calificacionTerman.fetchCalificacionById(idAspirante, idGrupo);
 
-        if (!calificacionData || !calificacionData.filas || calificacionData.filas.length === 0) {
-            return response.status(404).send("No se encontraron datos de calificación.");
+        // 2. Si NO existe, hacemos la calificación
+        if (!calificacionExistente || calificacionExistente.length === 0) {
+            console.log('No existe análisis previo. Calificando...');
+
+            const sesionAspirante = await sesionPruebaModel.fetchById({ idAspirante, idGrupo, idPrueba });
+
+            if (!sesionAspirante || sesionAspirante.length === 0) {
+                return response.status(403).render('error/error.pug', {
+                    message: "No hay asignación de prueba Terman para este aspirante.",
+                    volverAtras: true
+                });
+            }
+
+            const progreso = await progresoTermanModel.fetchProgresoById(idAspirante, idGrupo);
+
+            if (progreso.length > 0) {
+                const updatedAt = new Date(progreso[0].updatedAt);
+                const ahora = new Date();
+                const diferenciaHoras = (ahora - updatedAt) / (1000 * 60 * 60);
+
+                console.log("Diferencia Horas: ", diferenciaHoras)
+
+                if (diferenciaHoras > 4 && sesionAspirante[0].estatus === "En progreso") {
+                    await sesionPruebaModel.updateSesionPrueba({
+                        estatus: 1, // Incompleto
+                        idAspirante,
+                        idGrupo,
+                        idPrueba
+                    });
+                }
+
+                if (diferenciaHoras < 4 && sesionAspirante[0].estatus === "En progreso") {
+                    return response.status(403).render('error/error.pug', {
+                        message: "El aspirante sigue en progreso. No se pueden generar resultados aún.",
+                        volverAtras: true
+                    });
+                }
+
+                if (sesionAspirante[0].estatus === "No iniciado") {
+                    return response.status(403).render('error/error.pug', {
+                        message: "El aspirante no contestó esta prueba.",
+                        volverAtras: true
+                    });
+                }
+
+            // Calificar series
+            const series = [1,2,3,4,5,6,7,8,9,10];
+
+            for (const idSerie of series) {
+                const respuestasAspirante = await respuestasTerman.fetchRespuestasSerieById(idAspirante, idGrupo, idSerie);
+
+                if (idSerie >= 1 && idSerie <= 9) {
+                    for (const resp of respuestasAspirante) {
+                        if (typeof resp.respuestaAbierta === 'string') {
+                            resp.respuestaAbierta = parseInt(resp.respuestaAbierta, 10);
+                        }
+                    }
+                }
+
+                if (respuestasAspirante.length > 0) {
+                    await calificarSerieTerman(idSerie, idAspirante, idGrupo, respuestasAspirante);
+                }
+            }
+        }
+    }
+
+        // 3. Buscar usuario y análisis ya guardado
+        const [rows] = await usuariosModel.fetchUsuarioById(idAspirante);
+        const usuarioData = rows[0];
+        const calificacion = await calificacionTerman.fetchCalificacionById(idAspirante, idGrupo);
+        const series = await resultadoSerieTerman.fetchSeriesById(idAspirante, idGrupo);
+
+        /*
+        console.log("UsuarioData: ", usuarioData)
+        console.log("calificacion: ", calificacion)
+        console.log("series: ", series)
+        */
+        if (!usuarioData || !calificacion || !series || series.length === 0) {
+            return response.status(404).send("No se encontraron datos suficientes para el análisis.");
         }
 
-        const serie1 = await obtenerSerie(idAspirante, idGrupo, 1, calificacionData.filas[0].idCalificacionTerman);
-        const serie2 = await obtenerSerie(idAspirante, idGrupo, 2, calificacionData.filas[0].idCalificacionTerman);
-        const serie3 = await obtenerSerie(idAspirante, idGrupo, 3, calificacionData.filas[0].idCalificacionTerman);
-        const serie4 = await obtenerSerie(idAspirante, idGrupo, 4, calificacionData.filas[0].idCalificacionTerman);
-        const serie5 = await obtenerSerie(idAspirante, idGrupo, 5, calificacionData.filas[0].idCalificacionTerman);
-        const serie6 = await obtenerSerie(idAspirante, idGrupo, 6, calificacionData.filas[0].idCalificacionTerman);
-        const serie7 = await obtenerSerie(idAspirante, idGrupo, 7, calificacionData.filas[0].idCalificacionTerman);
-        const serie8 = await obtenerSerie(idAspirante, idGrupo, 8, calificacionData.filas[0].idCalificacionTerman);
-        const serie9 = await obtenerSerie(idAspirante, idGrupo, 9, calificacionData.filas[0].idCalificacionTerman);
-        const serie10 = await obtenerSerie(idAspirante, idGrupo, 10, calificacionData.filas[0].idCalificacionTerman);
+        const resultados = series.map(serie => ({
+            numero: serie.idSerieTerman,
+            categoria: serie.categoria,
+            puntuacion: serie.puntuacion,
+            rango: serie.rango,
+            porcentaje: reglaDeTres(serie.puntuacion, obtenerTotalPorSerie(serie.idSerieTerman))
+        }));        
 
-        const s1 = reglaDeTres(serie1.puntuacion, 16);
-        const s2 = reglaDeTres(serie2.puntuacion, 22);
-        const s3 = reglaDeTres(serie3.puntuacion, 30);
-        const s4 = reglaDeTres(serie4.puntuacion, 18);
-        const s5 = reglaDeTres(serie5.puntuacion, 20);
-        const s6 = reglaDeTres(serie6.puntuacion, 20);
-        const s7 = reglaDeTres(serie7.puntuacion, 20);
-        const s8 = reglaDeTres(serie8.puntuacion, 17);
-        const s9 = reglaDeTres(serie9.puntuacion, 18);
-        const s10 = reglaDeTres(serie10.puntuacion, 20);
-
-        const resultados = {
-            serie1: s1,
-            serie2: s2,
-            serie3: s3,
-            serie4: s4,
-            serie5: s5,
-            serie6: s6,
-            serie7: s7,
-            serie8: s8,
-            serie9: s9,
-            serie10: s10,
+        const resumen = {
+            nombreCompleto: `${usuarioData.nombre} ${usuarioData.apellidoPaterno} ${usuarioData.apellidoMaterno}`,
+            puntosTotales: calificacion[0].puntosTotales,
+            rango: calificacion[0].rango,
+            coeficienteIntelectual: calificacion[0].coeficienteIntelectual
         };
+        
 
-        const analisis = {
-            serie1: serie1,
-            serie2: serie2,
-            serie3: serie3,
-            serie4: serie4,
-            serie5: serie5,
-            serie6: serie6,
-            serie7: serie7,
-            serie8: serie8,
-            serie9: serie9,
-            serie10: serie10,
-        }
-
-        response.render('pruebas/terman/analisisTerman.ejs', {
+        // 4. Renderizar
+        return response.render('pruebas/terman/analisisTerman.pug', {
             csrfToken: request.csrfToken(),
-            datos: calificacionData.filas[0] || null,
-            res: resultados,
-            analisisTerman: analisis
+            resumen,
+            resultados,
+            resultadosJSON: JSON.stringify(resultados),
+            estatusPrueba: sesionAspirante[0].estatus
         });
+        
 
     } catch (error) {
-        console.error("Algo pasó:", error);
-        response.status(500).send("Algo sucedió mal");
+        console.error('Error en get_analisisTerman:', error);
+        return response.status(500).render('error/error.pug', { message: "Ocurrió un error al analizar los resultados del Terman." });
     }
 };
